@@ -1,0 +1,15 @@
+*Get current user
+strUserName = Trim(Substr(Sys(0),At("#",Sys(0))+2))
+*create ADSobject
+messagebox(strUserName )
+oADSobj=GETOBJECT("WinNT://srvishs")
+*Loop through AD
+FOR EACH Child IN oADSobj
+ IF Child.Class = "User" AND NOT Child.AccountDisabled
+    ? UPPER(Child.Name)
+    Child.GetInfo()
+    for each oGroup in Child.Groups
+      ? space(10), oGroup.name
+    next
+ ENDIF
+ENDFOR
